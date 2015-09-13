@@ -51,7 +51,7 @@ public class OwnHashMap {
 
     /*  as JDK HashMap.put() this method adds pair <key, value> to ownHashMap if pair with the same
         key doesn't exist yet or replace value by key if this key already exists in ownHashMap.
-        returns new putted value
+        returns previous value mapped to the key or null if key is new
      */
     public String put (int key, String value){
         if (size == CAPABILITY)return null;
@@ -62,11 +62,12 @@ public class OwnHashMap {
                 keys[index] = key;
                 values[index] = value;
                 size++;
-                return value;
+                return null;
             }
             else if (keys[index] == key){
+                String prevVal=values[index];
                 values[index] = value;
-                return value;
+                return prevVal;
             }
         }
     }
