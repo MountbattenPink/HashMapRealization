@@ -25,16 +25,21 @@ public class OwnHashMap {
         Arrays.fill(keys, EMPTY_KEY);
         }
 
+    /*
+        returns amount of existing pairs <key, value>
+     */
     public int size(){
         return size;
     }
 
+    /*  returns value by input key or null if key doesn't exist
+     */
     public String get (int key){
         int index=getIndexByKey(key);
         int collision=0;
-        while ( collision  <   CAPABILITY)
+        while ( collision < CAPABILITY-index)
         {
-            if (index+collision >=CAPABILITY){
+            if (index+collision >= CAPABILITY){
                     index=0;
                     collision=0;
             }
@@ -44,21 +49,30 @@ public class OwnHashMap {
         return null;
     }
 
-    // as an original method
+    /*  as JDK HashMap.put() this method adds pair <key, value> to ownHashMap if pair with the same
+        key doesn't exist yet or replace value by key if this key already exists in ownHashMap.
+        returns new putted value
+     */
     public String put (int key, String value){
         if (size == CAPABILITY)return null;
        for ( int index=getIndexByKey(key);;index++)
         {
             if (index == CAPABILITY-1)index = 0;
-            if (keys[index] == EMPTY_KEY) {
+            if ((keys[index] == EMPTY_KEY)) {
                 keys[index] = key;
                 values[index] = value;
                 size++;
                 return value;
             }
+            else if (keys[index] == key){
+                values[index] = value;
+                return value;
+            }
         }
     }
 
+    /*  function for key hashing
+     */
     private static final int hashKey(int key){
         //Knuth's multiplicative method
         return (int) ((key * 2654435761L) % (Math.pow(2, 32)));
